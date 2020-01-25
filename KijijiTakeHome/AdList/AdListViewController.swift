@@ -39,9 +39,10 @@ class AdListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         navigationItem.title = viewModel.screenTitle
         view.addSubview(collectionView)
-        collectionView.fillWithinMargins(view: view)
+        collectionView.fillWithinSafeArea(view: view)
         viewModel.onSetErrorMessage = { message in
             // @TODO
         }
