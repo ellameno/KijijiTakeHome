@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3A5DA4DA23DC4BD10057B118 /* CategoryItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5DA4D923DC4BD10057B118 /* CategoryItemCell.swift */; };
 		3A5DA4DC23DC4C6F0057B118 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5DA4DB23DC4C6F0057B118 /* UIViewExtensions.swift */; };
+		3A5DA4DF23DC50A40057B118 /* AdListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5DA4DE23DC50A40057B118 /* AdListViewController.swift */; };
+		3A5DA4E123DC50B60057B118 /* AdListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5DA4E023DC50B60057B118 /* AdListViewModel.swift */; };
+		3A5DA4E323DC51170057B118 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5DA4E223DC51170057B118 /* AdCell.swift */; };
 		3AD89F9823DC38490083360C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD89F9723DC38490083360C /* AppDelegate.swift */; };
 		3AD89F9C23DC38490083360C /* CategoryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD89F9B23DC38490083360C /* CategoryListViewController.swift */; };
 		3AD89FA123DC384C0083360C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AD89FA023DC384C0083360C /* Assets.xcassets */; };
@@ -34,6 +37,9 @@
 /* Begin PBXFileReference section */
 		3A5DA4D923DC4BD10057B118 /* CategoryItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItemCell.swift; sourceTree = "<group>"; };
 		3A5DA4DB23DC4C6F0057B118 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		3A5DA4DE23DC50A40057B118 /* AdListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdListViewController.swift; sourceTree = "<group>"; };
+		3A5DA4E023DC50B60057B118 /* AdListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdListViewModel.swift; sourceTree = "<group>"; };
+		3A5DA4E223DC51170057B118 /* AdCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
 		3AD89F9423DC38490083360C /* KijijiTakeHome.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KijijiTakeHome.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AD89F9723DC38490083360C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3AD89F9B23DC38490083360C /* CategoryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +74,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A5DA4DD23DC509A0057B118 /* AdList */ = {
+			isa = PBXGroup;
+			children = (
+				3A5DA4DE23DC50A40057B118 /* AdListViewController.swift */,
+				3A5DA4E023DC50B60057B118 /* AdListViewModel.swift */,
+				3A5DA4E223DC51170057B118 /* AdCell.swift */,
+			);
+			path = AdList;
+			sourceTree = "<group>";
+		};
 		3AD89F8B23DC38490083360C = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +108,7 @@
 				3AD89F9723DC38490083360C /* AppDelegate.swift */,
 				3AD89FC323DC47F50083360C /* CategoryList */,
 				3AD89FBA23DC3AE20083360C /* APIClient.swift */,
+				3A5DA4DD23DC509A0057B118 /* AdList */,
 				3AD89FC223DC44A00083360C /* Models */,
 				3AD89FBC23DC3E8A0083360C /* Logger.swift */,
 				3A5DA4DB23DC4C6F0057B118 /* UIViewExtensions.swift */,
@@ -230,9 +247,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A5DA4E323DC51170057B118 /* AdCell.swift in Sources */,
 				3AD89F9C23DC38490083360C /* CategoryListViewController.swift in Sources */,
 				3AD89F9823DC38490083360C /* AppDelegate.swift in Sources */,
 				3AD89FC123DC449C0083360C /* Advertisement.swift in Sources */,
+				3A5DA4E123DC50B60057B118 /* AdListViewModel.swift in Sources */,
+				3A5DA4DF23DC50A40057B118 /* AdListViewController.swift in Sources */,
 				3AD89FC523DC48020083360C /* CategoryListViewModel.swift in Sources */,
 				3AD89FBB23DC3AE20083360C /* APIClient.swift in Sources */,
 				3AD89FBD23DC3E8A0083360C /* Logger.swift in Sources */,

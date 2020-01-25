@@ -1,15 +1,25 @@
 //
-//  ViewController.swift
+//  AdListViewController.swift
 //  KijijiTakeHome
 //
 //  Created by Flannery Jefferson on 2020-01-25.
 //  Copyright © 2020 Flannery Jefferson. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
-class CategoryListViewController: UIViewController {
-    private var viewModel = CategoryListViewModel()
+class AdListViewController: UIViewController {
+    private var viewModel: AdListViewModel
+    
+    init(category: Category) {
+        self.viewModel = AdListViewModel(category: category)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     lazy var refreshControl = UIRefreshControl()
     
@@ -20,7 +30,7 @@ class CategoryListViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(CategoryItemCell.self, forCellWithReuseIdentifier: CategoryItemCell.reuseIdentifier)
+        collectionView.register(AdCell.self, forCellWithReuseIdentifier: AdCell.reuseIdentifier)
         collectionView.backgroundColor = .white
         return collectionView
     }()
@@ -51,24 +61,18 @@ class CategoryListViewController: UIViewController {
         viewModel.fetchData()
     }
 }
-extension CategoryListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension AdListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.getNumberOfRows(in: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryItemCell.reuseIdentifier, for: indexPath) as? CategoryItemCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AdCell.reuseIdentifier, for: indexPath) as? AdCell else {
             fatalError("CategoryItemCell not registered with collection view")
         }
-        let category = viewModel.getItem(for: indexPath)
-        cell.configure(with: category)
-        cell.delegate = self
+        let advertisement = viewModel.getItem(for: indexPath)
+        cell.configure(with: advertisement)
         return cell
     }
 }
-extension CategoryListViewController: CategoryItemCellDelegate {
-    func didSelectCategory(_ category: Category) {
-        let vc = AdListViewController(category: category)
-        navigationController?.pushViewController(vc, animated: true)
-    }  
-}
+
