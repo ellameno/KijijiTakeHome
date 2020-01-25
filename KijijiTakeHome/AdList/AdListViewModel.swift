@@ -35,6 +35,10 @@ class AdListViewModel {
     init(category: Category) {
         self.category = category
     }
+    var screenTitle: String? {
+        return category.name
+    }
+    
     func fetchData() {
         self.isLoading = true
         apiClient.request(endpoint: APIRouter.getAdsForCategory(self.category), completion: { (result: Result<[Advertisement]>) in

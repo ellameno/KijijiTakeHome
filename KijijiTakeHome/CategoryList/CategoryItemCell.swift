@@ -27,13 +27,20 @@ class CategoryItemCell: UICollectionViewCell {
         button.backgroundColor = .systemBlue
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 16
         return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(tagButton)
-        tagButton.fill(view: contentView)
+        NSLayoutConstraint.activate([
+            tagButton.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
+            tagButton.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            tagButton.rightAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.rightAnchor),
+            tagButton.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
+
+        ])
         tagButton.addTarget(self, action: #selector(onPressCategoryButton(_:)), for: .touchUpInside)
     }
     

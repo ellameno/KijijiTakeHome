@@ -49,6 +49,10 @@ class CategoryListViewModel {
         })
     }
     
+    var screenTitle: String {
+        return "Kijiji Tags"
+    }
+    
     func getNumberOfSections() -> Int {
         return 1
     }

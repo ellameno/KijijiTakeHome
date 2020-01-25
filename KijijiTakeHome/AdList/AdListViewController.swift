@@ -11,6 +11,7 @@ import UIKit
 
 class AdListViewController: UIViewController {
     private var viewModel: AdListViewModel
+    private var CELL_HEIGHT: CGFloat = 200
     
     init(category: Category) {
         self.viewModel = AdListViewModel(category: category)
@@ -37,6 +38,7 @@ class AdListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = viewModel.screenTitle
         view.addSubview(collectionView)
         collectionView.fill(view: view)
         viewModel.onSetErrorMessage = { message in
@@ -73,6 +75,11 @@ extension AdListViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let advertisement = viewModel.getItem(for: indexPath)
         cell.configure(with: advertisement)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let availableWidth = collectionView.bounds.inset(by: collectionView.layoutMargins).size.width
+        return CGSize(width: availableWidth, height: CELL_HEIGHT)
     }
 }
 

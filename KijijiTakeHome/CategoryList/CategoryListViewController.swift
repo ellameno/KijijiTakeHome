@@ -9,6 +9,7 @@
 import UIKit
 
 class CategoryListViewController: UIViewController {
+    private var CELL_HEIGHT: CGFloat = 80
     private var viewModel = CategoryListViewModel()
     
     lazy var refreshControl = UIRefreshControl()
@@ -27,6 +28,7 @@ class CategoryListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = viewModel.screenTitle
         view.addSubview(collectionView)
         collectionView.fill(view: view)
         viewModel.onSetErrorMessage = { message in
@@ -64,6 +66,11 @@ extension CategoryListViewController: UICollectionViewDelegate, UICollectionView
         cell.configure(with: category)
         cell.delegate = self
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let availableWidth = collectionView.bounds.inset(by: collectionView.layoutMargins).size.width
+        return CGSize(width: availableWidth, height: CELL_HEIGHT)
     }
 }
 extension CategoryListViewController: CategoryItemCellDelegate {
