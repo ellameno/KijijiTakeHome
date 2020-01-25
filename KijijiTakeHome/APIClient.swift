@@ -26,7 +26,9 @@ enum NetworkError: Error {
     case noData
     case decodingFailed
     case noResponse
-    case fourOhFour
+    case notFound
+    case serverError
+    case badRequest
     
     var userMessage: String {
         switch self {
@@ -91,14 +93,20 @@ class APIClient {
         }
         
         do {
-            let request = try self.buildRequest(for: endpoint)
-            let task = session.dataTask(with: request, completionHandler: { data, urlResponse, error in
+             guard let url = endpoint.baseURL?.appendingPathComponent(endpoint.path) else {
+                   throw NetworkError.invalidURL
+               }
+               var request = URLRequest(url: url)
+               request.httpMethod = endpoint.httpMethod.rawValue
+                let task = session.dataTask(with: request, completionHandler: { data, urlResponse, error in
                 guard let response = urlResponse else {
                     dispatchCompletion(.failure(.noResponse))
                     return
                 }
-                // @TODO: check for valid response code
-                // @TODO: check for error
+                if let error = self.getError(response, error) {
+                    dispatchCompletion(.failure(error))
+                    return
+                }
                 
                 guard let data = data else {
                     dispatchCompletion(.failure(.noData))
@@ -122,39 +130,51 @@ class APIClient {
         let decoder = JSONDecoder()
         return decoder
     }
-    
-    private func buildRequest(for endpoint: Endpoint) throws -> URLRequest {
-        guard let url = endpoint.baseURL?.appendingPathComponent(endpoint.path) else {
-            throw NetworkError.invalidURL
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = endpoint.httpMethod.rawValue
-        try encodeQueryParams(endpoint.queryParams, urlRequest: &request)
-        try addHeaders(headers: self.headers, to: &request)
-        return request
-    }
-    
-    private func addHeaders(headers: HTTPHeaders, to request: inout URLRequest) throws {
-        for (key, value) in headers {
-            request.setValue(value, forHTTPHeaderField: key)
-        }
-    }
-    
-    private func encodeQueryParams(_ parameters: URLQueryParameters, urlRequest: inout URLRequest) throws {
-        guard let url = urlRequest.url else { throw NetworkError.invalidURL }
 
-        if var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false), !parameters.isEmpty {
-            urlComponents.queryItems = [URLQueryItem]()
-            for (key, value) in parameters {
-                let queryItem = URLQueryItem(name: key,
-                                             value: value)
-                urlComponents.queryItems?.append(queryItem)
+    private func getError(_ response: URLResponse?, _ error: Error?) -> NetworkError? {
+        func getErrorFromResponse(_ httpResponse: HTTPURLResponse?) -> NetworkError? {
+            guard let httpResponse = httpResponse else {
+                log.error("No response")
+                return NetworkError.noResponse
             }
-            urlRequest.url = urlComponents.url
-        }
-        if urlRequest.value(forHTTPHeaderField: "Content-Type") == nil {
-            urlRequest.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        }
-    }
 
+            log.debug("Status code: \(httpResponse.statusCode).")
+            if httpResponse.statusCode >= 500 {
+                log.debug("ServerError.")
+                return NetworkError.serverError
+            }
+
+            if httpResponse.statusCode == 404 {
+                log.debug("NotFound")
+                return NetworkError.notFound
+            }
+
+            if httpResponse.statusCode >= 400 {
+                log.debug("BadRequestError.")
+                return NetworkError.badRequest
+            }
+            return nil
+        }
+
+        let httpResponse = response as? HTTPURLResponse
+        if error != nil {
+            log.error("Response: \(httpResponse?.statusCode ?? 0). Got error \(error?.localizedDescription ?? "nil").")
+
+            // If we got one, we don't want to hit the response nil case above and
+            // return a RecordParseError, because a RequestError is more fittinghttpResponse
+            if let httpResponse = httpResponse, let result = getErrorFromResponse(httpResponse) {
+                log.error("This was a failure response. Filled specific error type.")
+                return result
+            }
+
+            log.error("Filling generic network error.")
+            return NetworkError.requestFailed
+        }
+
+        if let result = getErrorFromResponse(httpResponse) {
+            return result
+        }
+
+        return nil
+    }
 }

@@ -19,7 +19,8 @@ class CategoryItemCell: UICollectionViewCell {
     
     func configure(with category: Category) {
         self.category = category
-        self.tagButton.setTitle(category.name, for: .normal)
+        let buttonTitle = "\(category.name) (\(category.count))"
+        self.tagButton.setTitle(buttonTitle, for: .normal)
     }
     
     lazy var tagButton: UIButton = {
@@ -38,8 +39,7 @@ class CategoryItemCell: UICollectionViewCell {
             tagButton.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
             tagButton.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
             tagButton.rightAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.rightAnchor),
-            tagButton.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
-
+            tagButton.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
         ])
         tagButton.addTarget(self, action: #selector(onPressCategoryButton(_:)), for: .touchUpInside)
     }

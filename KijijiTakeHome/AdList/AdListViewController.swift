@@ -12,6 +12,7 @@ import UIKit
 class AdListViewController: UIViewController {
     private var viewModel: AdListViewModel
     private var CELL_HEIGHT: CGFloat = 200
+    private var imageLoader = ImageLoader()
     
     init(category: Category) {
         self.viewModel = AdListViewModel(category: category)
@@ -40,7 +41,7 @@ class AdListViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = viewModel.screenTitle
         view.addSubview(collectionView)
-        collectionView.fill(view: view)
+        collectionView.fillWithinMargins(view: view)
         viewModel.onSetErrorMessage = { message in
             // @TODO
         }
@@ -73,7 +74,7 @@ extension AdListViewController: UICollectionViewDelegate, UICollectionViewDataSo
             fatalError("CategoryItemCell not registered with collection view")
         }
         let advertisement = viewModel.getItem(for: indexPath)
-        cell.configure(with: advertisement)
+        cell.configure(with: advertisement, imageLoader: imageLoader)
         return cell
     }
     
