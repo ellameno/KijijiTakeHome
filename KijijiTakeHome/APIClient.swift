@@ -8,8 +8,6 @@
 
 import Foundation
 
-fileprivate let log = Logger.self
-
 typealias URLQueryParameters = [String: String]
 public typealias HTTPHeaders = [String: String]
 
@@ -22,13 +20,22 @@ enum Result<T> {
 }
 
 enum NetworkError: Error {
-    case requestFailed // Catch-all error
+    case requestFailed // Fall-back error - shouldn't occur.
     case invalidURL
     case parameterEncodingFailed
     case noData
     case decodingFailed
     case noResponse
     case fourOhFour
+    
+    var userMessage: String {
+        switch self {
+        case .noResponse:
+            return "No response! Check your network connection."
+        default:
+            return "Woops! Something went wrong."
+        }
+    }
 }
     
 
@@ -76,31 +83,38 @@ class APIClient {
     }
     
     func request<T: Decodable>(endpoint: Endpoint, completion: @escaping (Result<T>) -> Void) {
+        
+        let dispatchCompletion = { (result: Result<T>) in
+            DispatchQueue.main.async {
+                completion(result)
+            }
+        }
+        
         do {
             let request = try self.buildRequest(for: endpoint)
-            session.dataTask(with: request, completionHandler: { data, urlResponse, error in
+            let task = session.dataTask(with: request, completionHandler: { data, urlResponse, error in
                 guard let response = urlResponse else {
-                    completion(.failure(.noResponse))
+                    dispatchCompletion(.failure(.noResponse))
                     return
                 }
                 // @TODO: check for valid response code
                 // @TODO: check for error
                 
                 guard let data = data else {
-                    completion(.failure(.noData))
+                    dispatchCompletion(.failure(.noData))
                     return
                 }
                 guard let decoded = try? self.decoder.decode(T.self, from: data) else {
-                    completion(.failure(.decodingFailed))
+                    dispatchCompletion(.failure(.decodingFailed))
                     return
                 }
-                completion(.success(decoded))
+                dispatchCompletion(.success(decoded))
             })
-            
+            task.resume()
         } catch let error as NetworkError {
-            completion(.failure(error))
+            dispatchCompletion(.failure(error))
         } catch {
-            completion(.failure(NetworkError.requestFailed))
+            dispatchCompletion(.failure(NetworkError.requestFailed))
         }
     }
     
