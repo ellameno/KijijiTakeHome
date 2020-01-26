@@ -32,7 +32,9 @@ final class ImageCache {
     }
     
     func insertImage(_ image: UIImage?, for url: URL) {
-        guard let image = image else { return removeImage(for: url) }
+        guard let image = image else {
+            return removeImage(for: url)
+        }
         lock.lock(); defer { lock.unlock() }
         imageCache.setObject(image, forKey: url as AnyObject, cost: image.diskSize)
     }

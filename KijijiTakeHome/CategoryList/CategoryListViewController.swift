@@ -10,12 +10,13 @@ import UIKit
 
 class CategoryListViewController: UIViewController {
     private var CELL_HEIGHT: CGFloat = 80
-    private var viewModel = CategoryListViewModel()
+    private var viewModel = AsyncListViewModel<AdCategory>(title: Strings.categoryListScreenTitle,
+                                                           dataEndpoint: APIRouter.getCategories)
     
     lazy var refreshControl = UIRefreshControl()
     
     lazy var collectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
+        let flowLayout = CategoryFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.refreshControl = refreshControl
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -23,6 +24,7 @@ class CategoryListViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.register(CategoryItemCell.self, forCellWithReuseIdentifier: CategoryItemCell.reuseIdentifier)
         collectionView.backgroundColor = .white
+        collectionView.delaysContentTouches = false
         return collectionView
     }()
     
@@ -67,14 +69,9 @@ extension CategoryListViewController: UICollectionViewDelegate, UICollectionView
         cell.delegate = self
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let availableWidth = collectionView.bounds.inset(by: collectionView.layoutMargins).size.width
-        return CGSize(width: availableWidth, height: CELL_HEIGHT)
-    }
 }
 extension CategoryListViewController: CategoryItemCellDelegate {
-    func didSelectCategory(_ category: Category) {
+    func didSelectCategory(_ category: AdCategory) {
         let vc = AdListViewController(category: category)
         navigationController?.pushViewController(vc, animated: true)
     }  

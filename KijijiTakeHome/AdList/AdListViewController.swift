@@ -10,12 +10,13 @@ import Foundation
 import UIKit
 
 class AdListViewController: UIViewController {
-    private var viewModel: AdListViewModel
+    private var viewModel: AsyncListViewModel<Advertisement>
     private var CELL_HEIGHT: CGFloat = 200
     private var imageLoader = ImageLoader()
     
-    init(category: Category) {
-        self.viewModel = AdListViewModel(category: category)
+    init(category: AdCategory) {
+        self.viewModel = AsyncListViewModel<Advertisement>(title: category.name,
+                                                           dataEndpoint: APIRouter.getAdsForCategory(category))
         super.init(nibName: nil, bundle: nil)
     }
     

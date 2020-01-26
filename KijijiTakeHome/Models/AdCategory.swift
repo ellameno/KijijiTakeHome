@@ -8,8 +8,7 @@
 
 import Foundation
 
-
-class Category: Codable {
+class AdCategory: Codable {
     var id: Int
     var name: String
     var count: Int

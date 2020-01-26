@@ -22,7 +22,6 @@ enum Result<T> {
 enum NetworkError: Error {
     case requestFailed // Fall-back error - shouldn't occur.
     case invalidURL
-    case parameterEncodingFailed
     case noData
     case decodingFailed
     case noResponse
@@ -33,13 +32,12 @@ enum NetworkError: Error {
     var userMessage: String {
         switch self {
         case .noResponse:
-            return "No response! Check your network connection."
+            return Strings.noResponseErrorMessage
         default:
-            return "Woops! Something went wrong."
+            return Strings.defaultErrorMessage
         }
     }
 }
-    
 
 protocol Endpoint {
     var baseURL: URL? { get }
@@ -49,7 +47,7 @@ protocol Endpoint {
 }
 
 enum APIRouter: Endpoint {
-    case getCategories, getAdsForCategory(Category)
+    case getCategories, getAdsForCategory(AdCategory)
 
     var baseURL: URL? {
         return URL(string: "https://ios-interview.surge.sh")
@@ -75,9 +73,11 @@ enum APIRouter: Endpoint {
 }
 
 class APIClient {
-    private let sessionConfig = URLSessionConfiguration.default
-    private lazy var session = URLSession(configuration: sessionConfig)
+    private var session: URLSession
     
+    init(customSession: URLSession? = nil) {
+        self.session = customSession ?? URLSession(configuration: URLSessionConfiguration.default)
+    }
     private var headers: HTTPHeaders {
         let headers = HTTPHeaders()
         // ... add any additional headers required

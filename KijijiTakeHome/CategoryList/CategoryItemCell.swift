@@ -10,27 +10,21 @@ import Foundation
 import UIKit
 
 protocol CategoryItemCellDelegate: class {
-    func didSelectCategory(_ category: Category)
+    func didSelectCategory(_ category: AdCategory)
 }
 class CategoryItemCell: UICollectionViewCell {
     static let reuseIdentifier = "CategoryItemCell"
-    private var category: Category?
+    private var category: AdCategory?
     weak var delegate: CategoryItemCellDelegate?
     
-    func configure(with category: Category) {
+    func configure(with category: AdCategory) {
         self.category = category
         let buttonTitle = "\(category.name) (\(category.count))"
         self.tagButton.setTitle(buttonTitle, for: .normal)
+        self.tagButton.sizeToFit()
     }
     
-    lazy var tagButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .systemBlue
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 16
-        return button
-    }()
+    lazy var tagButton = CategoryButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,7 +32,7 @@ class CategoryItemCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             tagButton.leftAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leftAnchor),
             tagButton.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
-            tagButton.rightAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.rightAnchor),
+            tagButton.rightAnchor.constraint(equalTo: contentView.layoutMarginsGuide.rightAnchor),
             tagButton.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
         ])
         tagButton.addTarget(self, action: #selector(onPressCategoryButton(_:)), for: .touchUpInside)
@@ -54,5 +48,13 @@ class CategoryItemCell: UICollectionViewCell {
             return
         }
         delegate?.didSelectCategory(category)
+    }
+    
+    // Make cell fit text
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        let layoutAttributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+        layoutIfNeeded()
+        layoutAttributes.frame.size = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+        return layoutAttributes
     }
 }
