@@ -46,7 +46,6 @@ class AsyncListViewModel<T: Decodable> {
             switch result {
             case .success(let categories):
                 self.data = categories
-                log.debug(categories)
             case .failure(let error):
                 self.errorMessage = error.userMessage
                 log.error(error)

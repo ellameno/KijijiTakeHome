@@ -10,14 +10,14 @@ import XCTest
 @testable import KijijiTakeHome
 
 class ImageCacheTests: BaseTestCase {
-    
+    let url = URL(string: "https://google.com")!
     var cache: ImageCache!
     var testImage: UIImage!
     
     override func setUp() {
         super.setUp()
         self.cache = ImageCache(config: ImageCache.Config(countLimit: 3, memoryLimit: 90000000))
-        self.testImage = imageWithSize(size: CGSize(width: 300, height: 300))
+        self.testImage = UIImage.imageWithSize(size: CGSize(width: 300, height: 300))
     }
     
     override func tearDown() {
@@ -25,7 +25,6 @@ class ImageCacheTests: BaseTestCase {
     }
     
     func testRetreivingSavedImage() {
-        let url = URL(string: "https://google.com")!
         cache.insertImage(testImage, for: url)
         
         let retrievedImage = cache.image(for: url)
@@ -34,7 +33,6 @@ class ImageCacheTests: BaseTestCase {
     }
     
     func testRemovingSavedImage() {
-        let url = URL(string: "https://google.com")!
         cache.insertImage(testImage, for: url)
         cache.removeImage(for: url)
         let retrievedImage = cache.image(for: url)
@@ -44,7 +42,6 @@ class ImageCacheTests: BaseTestCase {
         let firstImage = testImage
         let secondImage = UIImage()
 
-        let url = URL(string: "https://google.com")!
         cache.insertImage(firstImage, for: url)
         cache.insertImage(secondImage, for: url)
         let retrievedImage = cache.image(for: url)
@@ -53,24 +50,10 @@ class ImageCacheTests: BaseTestCase {
     }
     
     func testCacheDoesntSaveBeyondCapacity() {
-        let url = URL(string: "https://google.com")!
         self.cache = ImageCache(config: ImageCache.Config(countLimit: 3, memoryLimit: 100))
         XCTAssertGreaterThan(testImage.diskSize, 100) // Prove image is greater then the cache's memory limit
         self.cache.insertImage(testImage, for: url)
         let retrievedImage = self.cache.image(for: url)
         XCTAssertNil(retrievedImage) // Cache should NOT save an image larger than the cache's limit
-    }
-    
-    // MARK: Helper methods
-    func imageWithSize(size: CGSize, filledWithColor color: UIColor = UIColor.clear, scale: CGFloat = 0.0, opaque: Bool = false) -> UIImage {
-        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        
-        UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
-        color.set()
-        UIRectFill(rect)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return image!
     }
 }

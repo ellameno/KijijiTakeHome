@@ -21,6 +21,7 @@ class URLSessionMock: URLSession {
         self.mockResponseError = error
         self.shouldReturnEmptyResponse = shouldReturnEmptyResponse
     }
+    
     override func dataTask(with request: URLRequest,
                            completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         let data = self.mockResponseData
@@ -39,5 +40,4 @@ class URLSessionMock: URLSession {
         task._currentRequest = request
         return task
     }
-    
 }

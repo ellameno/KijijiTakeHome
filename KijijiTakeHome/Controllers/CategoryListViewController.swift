@@ -1,51 +1,41 @@
 //
-//  AdListViewController.swift
+//  ViewController.swift
 //  KijijiTakeHome
 //
 //  Created by Flannery Jefferson on 2020-01-25.
 //  Copyright © 2020 Flannery Jefferson. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
-class AdListViewController: UIViewController {
-    private var viewModel: AsyncListViewModel<Advertisement>
-    private var CELL_HEIGHT: CGFloat = 200
-    private var imageLoader = ImageLoader()
-    
-    init(category: AdCategory) {
-        self.viewModel = AsyncListViewModel<Advertisement>(title: category.name,
-                                                           dataEndpoint: APIRouter.getAdsForCategory(category))
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+class CategoryListViewController: UIViewController {
+    private var CELL_HEIGHT: CGFloat = 80
+    private var viewModel = AsyncListViewModel<AdCategory>(title: Strings.categoryListScreenTitle,
+                                                           dataEndpoint: APIRouter.getCategories)
     
     lazy var refreshControl = UIRefreshControl()
     
     lazy var collectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
+        let flowLayout = CategoryFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.refreshControl = refreshControl
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(AdCell.self, forCellWithReuseIdentifier: AdCell.reuseIdentifier)
+        collectionView.register(CategoryItemCell.self, forCellWithReuseIdentifier: CategoryItemCell.reuseIdentifier)
         collectionView.backgroundColor = .white
+        collectionView.delaysContentTouches = false
         return collectionView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         navigationItem.title = viewModel.screenTitle
         view.addSubview(collectionView)
-        collectionView.fillWithinSafeArea(view: view)
+        collectionView.fill(view: view)
+        
         viewModel.onSetErrorMessage = { message in
-            // @TODO
+            self.showErrorAlert(message: message)
         }
         viewModel.onSetLoading = { isLoading in
             if isLoading {
@@ -66,23 +56,24 @@ class AdListViewController: UIViewController {
         viewModel.fetchData()
     }
 }
-extension AdListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension CategoryListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.getNumberOfRows(in: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AdCell.reuseIdentifier, for: indexPath) as? AdCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryItemCell.reuseIdentifier, for: indexPath) as? CategoryItemCell else {
             fatalError("CategoryItemCell not registered with collection view")
         }
-        let advertisement = viewModel.getItem(for: indexPath)
-        cell.configure(with: advertisement, imageLoader: imageLoader)
+        let category = viewModel.getItem(for: indexPath)
+        cell.configure(with: category)
+        cell.delegate = self
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let availableWidth = collectionView.bounds.inset(by: collectionView.layoutMargins).size.width
-        return CGSize(width: availableWidth, height: CELL_HEIGHT)
-    }
 }
-
+extension CategoryListViewController: CategoryItemCellDelegate {
+    func didSelectCategory(_ category: AdCategory) {
+        let vc = AdListViewController(category: category)
+        navigationController?.pushViewController(vc, animated: true)
+    }  
+}

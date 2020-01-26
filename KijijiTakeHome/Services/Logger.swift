@@ -24,13 +24,6 @@ open class Logger {
         case error = 4
     }
     
-    open class func setup() {
-        #if DEBUG
-            
-        #else
-            // Bugsnag.start(withApiKey: Config.bugsnagAPIKey)
-        #endif
-    }
     /// log something generally unimportant (lowest priority)
     open class func verbose(_ message: @autoclosure () -> Any,
                             _ file: String = #file,
@@ -111,7 +104,6 @@ open class Logger {
         #endif
     }
 
-    // Logs to console if DEBUG, sends to Bugsnag if not (granted meets min logging requirement).
     class func dispatch_send(level: Level,
                              message: @autoclosure () -> Any,
                              file: String,
@@ -127,22 +119,20 @@ open class Logger {
         #endif
         let functionText: String = String(function.split(separator: "(").first ?? "")
         
-        // #if DEBUG
-            // Log to console
-            guard level.rawValue >= minLogLevel else {
-                return
-            }
-          
-            let filename = (file.components(separatedBy: "/").last ?? file).replacingOccurrences(of: ".swift", with: "")
-            
-            print(
-                // formattedDateString,
-                level.symbol,
-                level.name.uppercased(),
-                filename,
-                "\(functionText):\(line)",
-                "--", resolvedMessage)
+        guard level.rawValue >= minLogLevel else {
+            return
+        }
+      
+        let filename = (file.components(separatedBy: "/").last ?? file).replacingOccurrences(of: ".swift", with: "")
+        
+        print(
+            level.symbol,
+            level.name.uppercased(),
+            filename,
+            "\(functionText):\(line)",
+            "--", resolvedMessage)
     }
+    
     class var formattedDateString: String {
         if !timeZone.isEmpty {
             formatter.timeZone = TimeZone(abbreviation: timeZone)
