@@ -22,6 +22,9 @@
 		3A0EC71223DCE97800BA9F2F /* ImageCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0EC71123DCE97800BA9F2F /* ImageCacheTests.swift */; };
 		3A0EC71923DE0E8100BA9F2F /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0EC71823DE0E8100BA9F2F /* UIImageExtensions.swift */; };
 		3A53945F23DE1F62002F618E /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A53945E23DE1F62002F618E /* UIViewControllerExtensions.swift */; };
+		3A53946623DE2873002F618E /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A53946523DE2873002F618E /* UIColorExtensions.swift */; };
+		3A53946A23DE2F21002F618E /* TypographStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A53946923DE2F21002F618E /* TypographStyle.swift */; };
+		3A53946C23DE2F2E002F618E /* UILabelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A53946B23DE2F2E002F618E /* UILabelExtensions.swift */; };
 		3A5DA4DA23DC4BD10057B118 /* CategoryItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5DA4D923DC4BD10057B118 /* CategoryItemCell.swift */; };
 		3A5DA4DC23DC4C6F0057B118 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5DA4DB23DC4C6F0057B118 /* UIViewExtensions.swift */; };
 		3A5DA4DF23DC50A40057B118 /* AdListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5DA4DE23DC50A40057B118 /* AdListViewController.swift */; };
@@ -64,6 +67,9 @@
 		3A0EC71123DCE97800BA9F2F /* ImageCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheTests.swift; sourceTree = "<group>"; };
 		3A0EC71823DE0E8100BA9F2F /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		3A53945E23DE1F62002F618E /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
+		3A53946523DE2873002F618E /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		3A53946923DE2F21002F618E /* TypographStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypographStyle.swift; sourceTree = "<group>"; };
+		3A53946B23DE2F2E002F618E /* UILabelExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtensions.swift; sourceTree = "<group>"; };
 		3A5DA4D923DC4BD10057B118 /* CategoryItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItemCell.swift; sourceTree = "<group>"; };
 		3A5DA4DB23DC4C6F0057B118 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		3A5DA4DE23DC50A40057B118 /* AdListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdListViewController.swift; sourceTree = "<group>"; };
@@ -134,8 +140,19 @@
 			children = (
 				3A5DA4DB23DC4C6F0057B118 /* UIViewExtensions.swift */,
 				3A53945E23DE1F62002F618E /* UIViewControllerExtensions.swift */,
+				3A53946523DE2873002F618E /* UIColorExtensions.swift */,
+				3A53946B23DE2F2E002F618E /* UILabelExtensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3A53946D23DE2F81002F618E /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				3A0EC6F523DCCF0400BA9F2F /* Strings.swift */,
+				3A53946923DE2F21002F618E /* TypographStyle.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		3A5DA4E623DC9DF70057B118 /* Services */ = {
@@ -205,7 +222,7 @@
 				3AD89FC223DC44A00083360C /* Models */,
 				3A90C57923DE1DFB00C23A0C /* Views */,
 				3A53946023DE1F65002F618E /* Extensions */,
-				3A0EC6F523DCCF0400BA9F2F /* Strings.swift */,
+				3A53946D23DE2F81002F618E /* Constants */,
 				3AD89FA023DC384C0083360C /* Assets.xcassets */,
 				3AD89FA223DC384C0083360C /* LaunchScreen.storyboard */,
 				3AD89FA523DC384C0083360C /* Info.plist */,
@@ -348,13 +365,16 @@
 				3AD89FC123DC449C0083360C /* Advertisement.swift in Sources */,
 				3A0EC6F223DCADA100BA9F2F /* CategoryButton.swift in Sources */,
 				3A0EC6F423DCB01300BA9F2F /* CategoryFlowLayout.swift in Sources */,
+				3A53946623DE2873002F618E /* UIColorExtensions.swift in Sources */,
 				3A5DA4DF23DC50A40057B118 /* AdListViewController.swift in Sources */,
+				3A53946C23DE2F2E002F618E /* UILabelExtensions.swift in Sources */,
 				3AD89FBB23DC3AE20083360C /* APIClient.swift in Sources */,
 				3A0EC6F623DCCF0400BA9F2F /* Strings.swift in Sources */,
 				3A0EC70E23DCE67B00BA9F2F /* AsyncListViewModel.swift in Sources */,
 				3AD89FBD23DC3E8A0083360C /* Logger.swift in Sources */,
 				3A5DA4DA23DC4BD10057B118 /* CategoryItemCell.swift in Sources */,
 				3A5DA4DC23DC4C6F0057B118 /* UIViewExtensions.swift in Sources */,
+				3A53946A23DE2F21002F618E /* TypographStyle.swift in Sources */,
 				3AD89FBF23DC44750083360C /* AdCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

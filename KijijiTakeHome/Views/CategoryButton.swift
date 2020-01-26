@@ -31,6 +31,7 @@ class CategoryButton: UIButton {
         self.titleLabel?.textAlignment = .left
         self.titleLabel?.lineBreakMode = .byWordWrapping
         self.titleLabel?.numberOfLines = 0 // enable multiline text
+        self.titleLabel?.format(as: .body)
         self.updateStyleForState()
     }
     

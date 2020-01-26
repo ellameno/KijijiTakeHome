@@ -13,7 +13,10 @@ class AdListViewController: UIViewController {
     private var viewModel: AsyncListViewModel<Advertisement>
     private var CELL_HEIGHT: CGFloat = 200
     private var imageLoader = ImageLoader()
-    
+    private let SECTION_INSET: CGFloat = 12
+    private let HORIZONTAL_ITEM_SPACING: CGFloat = 6
+    private let VERTICAL_ITEM_SPACING: CGFloat = 12
+
     init(category: AdCategory) {
         self.viewModel = AsyncListViewModel<Advertisement>(title: category.name,
                                                            dataEndpoint: APIRouter.getAdsForCategory(category))
@@ -25,22 +28,27 @@ class AdListViewController: UIViewController {
     }
     
     lazy var refreshControl = UIRefreshControl()
-    
+    let flowLayout = UICollectionViewFlowLayout()
+
     lazy var collectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.sectionInset = UIEdgeInsets(top: SECTION_INSET, left: SECTION_INSET, bottom: 0, right: SECTION_INSET)
+
+        flowLayout.minimumInteritemSpacing = HORIZONTAL_ITEM_SPACING
+        flowLayout.minimumLineSpacing = VERTICAL_ITEM_SPACING
+        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.refreshControl = refreshControl
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(AdCell.self, forCellWithReuseIdentifier: AdCell.reuseIdentifier)
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = UIColor.backgroundMain
         return collectionView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundMain
         navigationItem.title = viewModel.screenTitle
         view.addSubview(collectionView)
         collectionView.fillWithinSafeArea(view: view)
@@ -81,8 +89,8 @@ extension AdListViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let availableWidth = collectionView.bounds.inset(by: collectionView.layoutMargins).size.width
-        return CGSize(width: availableWidth, height: CELL_HEIGHT)
+        let availableWidth = collectionView.bounds.inset(by: flowLayout.sectionInset).size.width
+        return CGSize(width: availableWidth/2 - flowLayout.minimumInteritemSpacing, height: CELL_HEIGHT)
     }
 }
 

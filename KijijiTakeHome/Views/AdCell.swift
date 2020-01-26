@@ -12,7 +12,7 @@ import Combine
 
 class AdCell: UICollectionViewCell {
     var cancellable = Set<AnyCancellable>()
-    
+    let PADDING: CGFloat = 8
     static let reuseIdentifier = "AdCell"
     private var advertisement: Advertisement?
     private var image: AnyPublisher<UIImage?, Never>?
@@ -54,32 +54,27 @@ class AdCell: UICollectionViewCell {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.format(as: .body)
         return label
     }()
     
     lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.format(as: .strong)
         return label
     }()
     
-    lazy var dividerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.systemGray4
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        return view
-    }()
-    
     lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [imageView, titleLabel, priceLabel, dividerView])
+        let stackView = UIStackView(arrangedSubviews: [imageView, titleLabel, priceLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 8
-        stackView.setCustomSpacing(0, after: titleLabel)
+        stackView.layoutMargins = UIEdgeInsets(top: PADDING, left: PADDING, bottom: PADDING, right: PADDING)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        // stackView.setCustomSpacing(0, after: titleLabel)
         return stackView
     }()
     
@@ -87,6 +82,7 @@ class AdCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.addSubview(stackView)
         stackView.fill(view: contentView)
+        backgroundColor = UIColor.highlightBackground
     }
     
     required init?(coder: NSCoder) {

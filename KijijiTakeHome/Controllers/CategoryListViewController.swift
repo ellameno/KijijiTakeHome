@@ -23,8 +23,7 @@ class CategoryListViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(CategoryItemCell.self, forCellWithReuseIdentifier: CategoryItemCell.reuseIdentifier)
-        collectionView.backgroundColor = .white
-        collectionView.delaysContentTouches = false
+        collectionView.backgroundColor = UIColor.backgroundMain
         return collectionView
     }()
     
