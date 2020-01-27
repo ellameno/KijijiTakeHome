@@ -80,7 +80,7 @@ class APIClient {
     }
     private var headers: HTTPHeaders {
         let headers = HTTPHeaders()
-        // ... add any additional headers required
+        // ... any additional headers would go here if required
         return headers
     }
     
@@ -159,9 +159,6 @@ class APIClient {
         let httpResponse = response as? HTTPURLResponse
         if error != nil {
             log.error("Response: \(httpResponse?.statusCode ?? 0). Got error \(error?.localizedDescription ?? "nil").")
-
-            // If we got one, we don't want to hit the response nil case above and
-            // return a RecordParseError, because a RequestError is more fittinghttpResponse
             if let httpResponse = httpResponse, let result = getErrorFromResponse(httpResponse) {
                 log.error("This was a failure response. Filled specific error type.")
                 return result

@@ -13,7 +13,7 @@ class CategoryFlowLayout: UICollectionViewFlowLayout {
     
     override init() {
         super.init()
-        self.sectionInsetReference = .fromContentInset // .fromContentInset is default
+        self.sectionInsetReference = .fromContentInset
         self.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         self.minimumInteritemSpacing = 10
         self.minimumLineSpacing = 10
