@@ -72,6 +72,11 @@ class AdListViewController: UIViewController {
         viewModel.fetchData()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
     @objc func refreshData(_: UIRefreshControl) {
         viewModel.fetchData()
     }

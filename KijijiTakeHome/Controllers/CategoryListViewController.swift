@@ -54,6 +54,11 @@ class CategoryListViewController: UIViewController {
     @objc func refreshData(_: UIRefreshControl) {
         viewModel.fetchData()
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
 }
 extension CategoryListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
