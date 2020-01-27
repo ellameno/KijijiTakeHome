@@ -10,5 +10,4 @@ This app supports:
 - Landscape & Portrait
 
 ## Notes
-- The requirements for the project include requesting images from non-https URLs. For this reason, App transport security settings's `Allow Arbitrary Loads` property is set to `YES`.
--
+- The assignment requires requesting images from non-HTTPS URLs. For this reason, App transport security settings's `Allow Arbitrary Loads` property is set to `YES`.
