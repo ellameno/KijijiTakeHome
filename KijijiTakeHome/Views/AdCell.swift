@@ -44,6 +44,7 @@ class AdCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.addSubview(loadingIndicator)
         NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalToConstant: 150),
             loadingIndicator.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             loadingIndicator.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
             loadingIndicator.widthAnchor.constraint(equalToConstant: 24),
@@ -74,7 +75,6 @@ class AdCell: UICollectionViewCell {
         stackView.spacing = 8
         stackView.layoutMargins = UIEdgeInsets(top: PADDING, left: PADDING, bottom: PADDING, right: PADDING)
         stackView.isLayoutMarginsRelativeArrangement = true
-        // stackView.setCustomSpacing(0, after: titleLabel)
         return stackView
     }()
     

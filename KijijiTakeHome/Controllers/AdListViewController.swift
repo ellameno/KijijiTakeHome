@@ -11,7 +11,7 @@ import UIKit
 
 class AdListViewController: UIViewController {
     private var viewModel: AsyncListViewModel<Advertisement>
-    private var CELL_HEIGHT: CGFloat = 200
+    private var CELL_HEIGHT: CGFloat = 230
     private var imageLoader = ImageLoader()
     private let SECTION_INSET: CGFloat = 12
     private let HORIZONTAL_ITEM_SPACING: CGFloat = 6
@@ -28,14 +28,16 @@ class AdListViewController: UIViewController {
     }
     
     lazy var refreshControl = UIRefreshControl()
-    let flowLayout = UICollectionViewFlowLayout()
-
-    lazy var collectionView: UICollectionView = {
+    
+    lazy var flowLayout: UICollectionViewFlowLayout = {
+        let flowLayout = UICollectionViewFlowLayout()
         flowLayout.sectionInset = UIEdgeInsets(top: SECTION_INSET, left: SECTION_INSET, bottom: 0, right: SECTION_INSET)
-
         flowLayout.minimumInteritemSpacing = HORIZONTAL_ITEM_SPACING
         flowLayout.minimumLineSpacing = VERTICAL_ITEM_SPACING
-        
+        return flowLayout
+    }()
+
+    lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.refreshControl = refreshControl
         collectionView.translatesAutoresizingMaskIntoConstraints = false
